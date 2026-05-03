@@ -1,0 +1,119 @@
+id: aurekai_capability_pipeline
+namespace: aurekai.runtime
+
+description: |
+  End-to-end capability chain: doctor-deep → manifest-verify → model-memory-pack
+  → sae-audit → semantic-cache-bench → proof-bundle-export → release-gate.
+  Each step captures output and proof URI. Runs on the Aurekai MCP container.
+
+inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.5"
+  - id: model_tag
+    type: STRING
+    defaults: "latest"
+  - id: release_tag
+    type: STRING
+    defaults: ""
+  - id: cache_namespace
+    type: STRING
+    defaults: "default"
+  - id: fail_fast
+    type: BOOLEAN
+    defaults: true
+
+variables:
+  run_id: "{{ execution.id }}"
+  proof_prefix: "aurekai://proof/{{ execution.id }}"
+
+tasks:
+  - id: install_runtime
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm install -g @aurekai/runtime@{{ inputs.aurekai_version }} --silent
+
+  - id: doctor_deep
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai doctor --deep --json | tee /tmp/doctor-result.json
+    outputFiles:
+      - /tmp/doctor-result.json
+
+  - id: manifest_verify
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai verify --manifest artifact.json --json | tee /tmp/manifest-result.json
+    outputFiles:
+      - /tmp/manifest-result.json
+
+  - id: model_memory_pack
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai pack --tag {{ inputs.model_tag }} --json | tee /tmp/pack-result.json
+    outputFiles:
+      - /tmp/pack-result.json
+
+  - id: sae_audit
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai sae audit --json | tee /tmp/sae-result.json
+    outputFiles:
+      - /tmp/sae-result.json
+
+  - id: semantic_cache_bench
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai cache bench --namespace {{ inputs.cache_namespace }} --json | tee /tmp/cache-result.json
+    outputFiles:
+      - /tmp/cache-result.json
+
+  - id: proof_bundle_export
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai proof export --run-id {{ vars.run_id }} --json | tee /tmp/proof-result.json
+    outputFiles:
+      - /tmp/proof-result.json
+
+  - id: release_gate
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - TAG="{{ inputs.release_tag }}"
+      - '[ -z "$TAG" ] && TAG="{{ inputs.aurekai_version }}"'
+      - akai release gate --version "$TAG" --json | tee /tmp/gate-result.json
+    outputFiles:
+      - /tmp/gate-result.json
+
+  - id: pipeline_summary
+    type: io.kestra.plugin.scripts.python.Script
+    script: |
+      import json, os
+      steps = {
+        "doctor_deep": "/tmp/doctor-result.json",
+        "manifest_verify": "/tmp/manifest-result.json",
+        "model_memory_pack": "/tmp/pack-result.json",
+        "sae_audit": "/tmp/sae-result.json",
+        "semantic_cache_bench": "/tmp/cache-result.json",
+        "proof_bundle_export": "/tmp/proof-result.json",
+        "release_gate": "/tmp/gate-result.json",
+      }
+      summary = {"run_id": "{{ vars.run_id }}", "steps": {}}
+      for name, path in steps.items():
+        try:
+          with open(path) as f:
+            summary["steps"][name] = json.load(f)
+        except Exception:
+          summary["steps"][name] = {"error": "output not found"}
+      with open("/tmp/pipeline-summary.json", "w") as f:
+        json.dump(summary, f, indent=2)
+      print(json.dumps(summary, indent=2))
+    outputFiles:
+      - /tmp/pipeline-summary.json
+
+errors:
+  - id: on_failure
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Aurekai capability pipeline failed at execution {{ execution.id }}.
+      Review step outputs above for the failing operator.
+    level: ERROR

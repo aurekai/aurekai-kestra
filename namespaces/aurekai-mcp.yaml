@@ -1,0 +1,27 @@
+id: aurekai-mcp
+namespace: aurekai.runtime
+
+description: |
+  Aurekai MCP namespace resource — connects Kestra to the Aurekai MCP server.
+  Provides the `mcp_server` variable used by flows to call Aurekai capability operators
+  through the MCP protocol (resources, prompts, tools/call).
+
+variables:
+  mcp_server_image: "ghcr.io/aurekai/aurekai-mcp:0.8.0-alpha.5"
+  mcp_transport: "http"
+  mcp_port: "3000"
+  mcp_base_url: "http://localhost:3000/mcp"
+  akai_version: "0.8.0-alpha.5"
+  akai_runtime_package: "@aurekai/runtime"
+  akai_mcp_package: "@aurekai/mcp"
+  proof_namespace: "aurekai://proof/"
+  artifact_namespace: "aurekai://artifacts/"
+
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.shell.Commands
+    values:
+      docker:
+        image: "{{ vars.mcp_server_image }}"
+      env:
+        AKAI_MCP_HTTP_PORT: "{{ vars.mcp_port }}"
+        AUREKAI_RUNTIME_VERSION: "{{ vars.akai_version }}"
