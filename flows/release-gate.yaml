@@ -7,6 +7,15 @@ inputs:
   - id: aurekai_version
     type: STRING
     defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: pypi_version
     type: STRING
     defaults: 0.8.0a3
@@ -15,12 +24,12 @@ tasks:
   - id: check_npm_runtime
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - npm view @aurekai/runtime versions --json | jq -e '.[] | select(. == "{{ inputs.aurekai_version }}")' >/dev/null
+      - npm view @aurekai/runtime versions --json | jq -e '.[] | select(. == "{{ inputs.akai_package_version }}")' >/dev/null
 
   - id: check_npm_mcp
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - npm view @aurekai/mcp versions --json | jq -e '.[] | select(. == "{{ inputs.aurekai_version }}")' >/dev/null
+      - npm view @aurekai/mcp versions --json | jq -e '.[] | select(. == "{{ inputs.akai_package_version }}")' >/dev/null
 
   - id: check_pypi
     type: io.kestra.plugin.scripts.shell.Commands
@@ -45,5 +54,5 @@ tasks:
   - id: doctor_deep
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - npm install -g @aurekai/runtime@{{ inputs.aurekai_version }}
+      - npm install -g @aurekai/runtime@{{ inputs.akai_package_version }}
       - akai doctor --deep

@@ -4,6 +4,18 @@ namespace: aurekai.release
 description: Check npm package and version availability.
 
 inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: package_name
     type: STRING
     defaults: "@aurekai/runtime"

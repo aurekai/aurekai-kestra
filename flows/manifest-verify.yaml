@@ -4,6 +4,18 @@ namespace: aurekai.release
 description: Validate Aurekai manifest shape and compatibility metadata.
 
 inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: manifest_path
     type: STRING
     defaults: "aurekai.manifest.json"

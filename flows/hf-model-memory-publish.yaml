@@ -4,6 +4,18 @@ namespace: aurekai.release
 description: Validate model-memory artifacts before publishing to Hugging Face.
 
 inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: artifact_dir
     type: STRING
     defaults: dist

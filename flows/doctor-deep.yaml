@@ -7,6 +7,15 @@ inputs:
   - id: aurekai_version
     type: STRING
     defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: runtime_package
     type: STRING
     defaults: "@aurekai/runtime"
@@ -15,7 +24,7 @@ tasks:
   - id: install_runtime
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - npm install -g {{ inputs.runtime_package }}@{{ inputs.aurekai_version }}
+      - npm install -g {{ inputs.runtime_package }}@{{ inputs.akai_package_version }}
 
   - id: run_doctor_deep
     type: io.kestra.plugin.scripts.shell.Commands

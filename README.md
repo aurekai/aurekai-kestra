@@ -30,6 +30,27 @@ This repository contains reusable Kestra flows, blueprint-style examples, GitOps
 3. Configure required secrets.
 4. Run `bash tests/validate-flows.sh` before commit.
 
+## Release Version Sync
+
+Shared release defaults are centralized in `.release-versions.env`:
+
+- `AUREKAI_VERSION`
+- `AKAI_PACKAGE_VERSION`
+- `AUREKAI_MANIFEST_SCHEMA`
+- `HELM_CHART_VERSION`
+
+Sync all flow defaults with one command:
+
+```bash
+bash scripts/sync-release-defaults.sh
+```
+
+Validate release inputs across all flows:
+
+```bash
+bash tests/validate-release-inputs.sh
+```
+
 ## Related Repos
 
 - Core platform: https://github.com/aurekai/aurekai

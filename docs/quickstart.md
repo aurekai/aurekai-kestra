@@ -19,5 +19,7 @@ See [docs/secrets.md](./secrets.md).
 ## 4. Validate before commit
 
 ```bash
+bash scripts/sync-release-defaults.sh
+bash tests/validate-release-inputs.sh
 bash tests/validate-flows.sh
 ```

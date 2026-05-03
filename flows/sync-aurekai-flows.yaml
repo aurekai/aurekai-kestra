@@ -4,6 +4,18 @@ namespace: aurekai.platform
 description: Sync Aurekai Kestra flows from Git repository into a Kestra namespace.
 
 inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: akai_package_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: aurekai_manifest_schema
+    type: STRING
+    defaults: "aurekai.deploy.v1"
+  - id: helm_chart_version
+    type: STRING
+    defaults: "0.8.1"
   - id: repo_url
     type: STRING
     defaults: "https://github.com/aurekai/aurekai-kestra"

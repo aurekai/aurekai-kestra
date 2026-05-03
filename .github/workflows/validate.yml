@@ -10,5 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Ensure executable validators
+        run: chmod +x tests/validate-flows.sh tests/validate-release-inputs.sh scripts/sync-release-defaults.sh
+      - name: Sync release defaults
+        run: bash scripts/sync-release-defaults.sh
+      - name: Validate release inputs
+        run: bash tests/validate-release-inputs.sh
       - name: Validate flow shape
         run: bash tests/validate-flows.sh
