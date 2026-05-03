@@ -1,0 +1,4 @@
+id: aurekai.release
+kind: io.kestra.core.models.namespaces.Namespace
+
+description: Release namespace for publish and gate workflows.

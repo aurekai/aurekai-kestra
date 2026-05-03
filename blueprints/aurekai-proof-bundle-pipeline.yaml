@@ -1,0 +1,10 @@
+id: blueprint_aurekai_proof_bundle_pipeline
+namespace: aurekai.blueprints
+
+description: Blueprint-style proof bundle export pipeline.
+
+tasks:
+  - id: export_bundle
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai run recipe.json --sae-audit --semantic-cache

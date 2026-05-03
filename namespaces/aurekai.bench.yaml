@@ -1,0 +1,4 @@
+id: aurekai.bench
+kind: io.kestra.core.models.namespaces.Namespace
+
+description: Benchmark namespace for semantic cache and performance runs.

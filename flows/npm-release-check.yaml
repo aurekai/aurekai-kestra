@@ -1,0 +1,18 @@
+id: aurekai_npm_release_check
+namespace: aurekai.release
+
+description: Check npm package and version availability.
+
+inputs:
+  - id: package_name
+    type: STRING
+    defaults: "@aurekai/runtime"
+  - id: version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+
+tasks:
+  - id: check_npm
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm view {{ inputs.package_name }} versions --json | jq -e '.[] | select(. == "{{ inputs.version }}")' >/dev/null

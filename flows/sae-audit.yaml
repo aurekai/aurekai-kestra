@@ -1,0 +1,15 @@
+id: aurekai_sae_audit
+namespace: aurekai.memory
+
+description: Run SAE audit against an artifact and emit feature outputs.
+
+inputs:
+  - id: recipe
+    type: STRING
+    defaults: recipe.json
+
+tasks:
+  - id: run_sae_audit
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai run {{ inputs.recipe }} --sae-audit

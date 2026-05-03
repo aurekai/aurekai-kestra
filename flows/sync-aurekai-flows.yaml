@@ -1,0 +1,21 @@
+id: aurekai_sync_flows
+namespace: aurekai.platform
+
+description: Sync Aurekai Kestra flows from Git repository into a Kestra namespace.
+
+inputs:
+  - id: repo_url
+    type: STRING
+    defaults: "https://github.com/aurekai/aurekai-kestra"
+  - id: branch
+    type: STRING
+    defaults: main
+  - id: target_namespace
+    type: STRING
+    defaults: aurekai.runtime
+
+tasks:
+  - id: sync_notice
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - echo "Use Kestra SyncFlows with repo={{ inputs.repo_url }}, branch={{ inputs.branch }}, namespace={{ inputs.target_namespace }}"

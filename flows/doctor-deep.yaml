@@ -1,0 +1,24 @@
+id: aurekai_doctor_deep
+namespace: aurekai.runtime
+
+description: Install Aurekai runtime and run deep diagnostics.
+
+inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: runtime_package
+    type: STRING
+    defaults: "@aurekai/runtime"
+
+tasks:
+  - id: install_runtime
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm install -g {{ inputs.runtime_package }}@{{ inputs.aurekai_version }}
+
+  - id: run_doctor_deep
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai --help
+      - akai doctor --deep

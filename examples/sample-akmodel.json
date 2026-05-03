@@ -1,0 +1,6 @@
+{
+  "artifact_type": "akmodel",
+  "model": "qwen3-8b",
+  "schema": "aurekai.model-memory.v1",
+  "checksum": "sha256:example"
+}

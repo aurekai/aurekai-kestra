@@ -1,0 +1,8 @@
+{
+  "name": "aurekai",
+  "release": "0.8.0-alpha.4",
+  "abi": "bonfyre-abi-v1",
+  "native_runtime": {
+    "version": "0.8.0-alpha.5"
+  }
+}

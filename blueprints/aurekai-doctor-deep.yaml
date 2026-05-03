@@ -1,0 +1,10 @@
+id: blueprint_aurekai_doctor_deep
+namespace: aurekai.blueprints
+
+description: Blueprint-style example for deep environment diagnostics.
+
+tasks:
+  - id: doctor_deep
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai doctor --deep

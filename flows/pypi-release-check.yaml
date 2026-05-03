@@ -1,0 +1,15 @@
+id: aurekai_pypi_release_check
+namespace: aurekai.release
+
+description: Check PyPI release availability for a target version.
+
+inputs:
+  - id: version
+    type: STRING
+    defaults: 0.8.0a3
+
+tasks:
+  - id: check_pypi
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - curl -fsSL https://pypi.org/pypi/aurekai/{{ inputs.version }}/json >/dev/null

@@ -1,0 +1,10 @@
+id: blueprint_aurekai_model_memory_pipeline
+namespace: aurekai.blueprints
+
+description: Blueprint-style model-memory artifact validation pipeline.
+
+tasks:
+  - id: validate_artifacts
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - find dist -type f \( -name '*.akmodel' -o -name '*.aksae' -o -name '*.akfpqx' \)

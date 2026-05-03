@@ -1,0 +1,4 @@
+id: aurekai.dev
+kind: io.kestra.core.models.namespaces.Namespace
+
+description: Development namespace for Aurekai flow testing.

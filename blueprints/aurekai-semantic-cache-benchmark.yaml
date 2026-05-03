@@ -1,0 +1,10 @@
+id: blueprint_aurekai_semantic_cache_benchmark
+namespace: aurekai.blueprints
+
+description: Blueprint-style semantic cache benchmark run.
+
+tasks:
+  - id: benchmark
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai run bench.recipe.json --semantic-cache

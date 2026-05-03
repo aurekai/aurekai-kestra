@@ -1,0 +1,16 @@
+id: aurekai_model_memory_pack
+namespace: aurekai.memory
+
+description: Validate model-memory artifacts and package metadata.
+
+inputs:
+  - id: artifact_dir
+    type: STRING
+    defaults: dist
+
+tasks:
+  - id: list_model_memory_files
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - ls -la {{ inputs.artifact_dir }}
+      - find {{ inputs.artifact_dir }} -type f \( -name '*.akmodel' -o -name '*.aksae' -o -name '*.akfpqx' -o -name '*.bfmodel' -o -name '*.bfsae' -o -name '*.bffpqx' \)

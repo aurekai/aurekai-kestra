@@ -1,0 +1,15 @@
+id: aurekai_semantic_cache_bench
+namespace: aurekai.bench
+
+description: Run semantic cache benchmark and emit JSON metrics.
+
+inputs:
+  - id: recipe
+    type: STRING
+    defaults: bench.recipe.json
+
+tasks:
+  - id: run_cache_benchmark
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - akai run {{ inputs.recipe }} --semantic-cache

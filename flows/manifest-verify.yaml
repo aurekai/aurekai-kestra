@@ -1,0 +1,25 @@
+id: aurekai_manifest_verify
+namespace: aurekai.release
+
+description: Validate Aurekai manifest shape and compatibility metadata.
+
+inputs:
+  - id: manifest_path
+    type: STRING
+    defaults: "aurekai.manifest.json"
+  - id: compatibility_manifest_path
+    type: STRING
+    defaults: "bonfyre.manifest.json"
+
+tasks:
+  - id: verify_required_files
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - test -f {{ inputs.manifest_path }}
+      - test -f {{ inputs.compatibility_manifest_path }}
+
+  - id: verify_manifest_shape
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - jq -e '.name and .release and .abi and .native_runtime' {{ inputs.manifest_path }} > /dev/null
+      - jq -e '.compatibility and .legacy_codename' {{ inputs.compatibility_manifest_path }} > /dev/null

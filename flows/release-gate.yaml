@@ -1,0 +1,49 @@
+id: aurekai_release_gate
+namespace: aurekai.release
+
+description: Aggregate release checks before publish.
+
+inputs:
+  - id: aurekai_version
+    type: STRING
+    defaults: "0.8.0-alpha.4"
+  - id: pypi_version
+    type: STRING
+    defaults: 0.8.0a3
+
+tasks:
+  - id: check_npm_runtime
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm view @aurekai/runtime versions --json | jq -e '.[] | select(. == "{{ inputs.aurekai_version }}")' >/dev/null
+
+  - id: check_npm_mcp
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm view @aurekai/mcp versions --json | jq -e '.[] | select(. == "{{ inputs.aurekai_version }}")' >/dev/null
+
+  - id: check_pypi
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - curl -fsSL https://pypi.org/pypi/aurekai/{{ inputs.pypi_version }}/json >/dev/null
+
+  - id: check_jsr_sdk
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - curl -fsSL https://jsr.io/@aurekai/sdk/meta.json >/dev/null
+
+  - id: check_homebrew_tap
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - curl -fsSL https://raw.githubusercontent.com/aurekai/homebrew-tap/main/Formula/aurekai.rb >/dev/null
+
+  - id: check_mcp_registry_surface
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - curl -fsSL https://github.com/aurekai/aurekai-mcp >/dev/null
+
+  - id: doctor_deep
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - npm install -g @aurekai/runtime@{{ inputs.aurekai_version }}
+      - akai doctor --deep

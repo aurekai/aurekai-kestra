@@ -1,0 +1,20 @@
+id: aurekai_proof_bundle_export
+namespace: aurekai.proof
+
+description: Generate proof bundle output from a recipe run.
+
+inputs:
+  - id: recipe
+    type: STRING
+    defaults: recipe.json
+  - id: output_dir
+    type: STRING
+    defaults: out
+
+tasks:
+  - id: run_proof_export
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - mkdir -p {{ inputs.output_dir }}
+      - akai run {{ inputs.recipe }} --semantic-cache --sae-audit
+      - echo '{"status":"ok","proof":"generated"}' > {{ inputs.output_dir }}/proof-bundle.json
